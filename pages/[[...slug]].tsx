@@ -34,8 +34,10 @@ export default function ProjectSlugRoute(props: PageProps) {
 
   console.log(page)
   // TODO: Use buildComponent to render the components on the page
-  const Page = ({ page }) => <></>
 
+  const Page = ({ page }) => (
+    <>{page?.sections?.map((section) => buildComponent(section))}</>
+  )
   if (preview) {
     return (
       <PreviewSuspense
@@ -104,7 +106,9 @@ export const getStaticPaths = async () => {
 
   return {
     // TODO: Map the paths return from Sanity into the correct shape that Next.js is expecting
-    paths: [],
-    fallback: false,
+    paths:
+    paths?.map((slug) => ({
+      params: { slug: `${slug}`.replace('/', '').split('/') },
+    })) || [],    fallback: false,
   }
 }
