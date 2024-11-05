@@ -5,6 +5,7 @@ export default defineType({
   type: 'document',
   name: 'page',
   title: 'Page',
+  i18n: true,
   icon: Browser,
   fields: [
     defineField({
@@ -39,11 +40,12 @@ export default defineType({
   preview: {
     select: {
       title: 'slug.current',
+      lang: "_lang" // We need to find the best way to wrap global routes with localization
     },
-    prepare({ title }) {
+    prepare(data) {
       return {
         subtitle: 'Page',
-        title,
+        title: data.title, // getLangTitleByLocale(data.lang),
       }
     },
   },

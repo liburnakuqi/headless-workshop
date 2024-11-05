@@ -3,6 +3,7 @@
  */
 
 import { visionTool } from '@sanity/vision'
+import { documentI18n } from "@sanity/document-internationalization"
 import { defineConfig } from 'sanity'
 import { deskTool } from 'sanity/desk'
 import { unsplashImageAsset } from 'sanity-plugin-asset-source-unsplash'
@@ -62,6 +63,17 @@ export default defineConfig({
       structure: deskStructure,
       // `defaultDocumentNode` is responsible for adding a “Preview” tab to the document pane
       defaultDocumentNode: previewDocumentNode({ apiVersion, previewSecretId }),
+    }),
+    documentI18n({
+      base: "en-GB",
+      languages: [
+        { id: "en-GB", title: "UK English" },
+        { id: "de-DE", title: "German" },
+        { id: "fr-FR", title: "French" },
+      ],
+      fieldNames: {
+        lang: "_lang",
+      },
     }),
     // Configures the global "new document" button, and document actions, to suit the Settings document singleton
     // singletonPlugin([home.name, settings.name]),
