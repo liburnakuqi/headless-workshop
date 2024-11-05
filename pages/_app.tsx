@@ -7,8 +7,9 @@ import { AppProps } from 'next/app'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { mono, sans, serif } from '../styles/font'
+import { appWithTranslation } from "next-i18next"
 
-export default function App({ Component, pageProps }: AppProps) {
+function App({ Component, pageProps }: AppProps) {
   const { route } = useRouter()
   const isSanityStudio = route.startsWith('/studio')
   const navigation = pageProps?.global?.navigation
@@ -38,3 +39,5 @@ export default function App({ Component, pageProps }: AppProps) {
     </>
   )
 }
+
+export default appWithTranslation(App)
