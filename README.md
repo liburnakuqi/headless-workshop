@@ -24,17 +24,15 @@ Access the workshop presentation [here](https://docs.google.com/presentation/d/1
 
 ## Running the project locally
 
-### Storybook
+### Update local env
 
-[Storybook](https://storybook.js.org/) contains all the prebuilt components we'll be working with. To access storybook locally run:
-
-```bash
-npm run storybook
-```
-
-Navigate to http://localhost:6006.
+Use ``` .env.local.example ``` as a reference to configure the required env var.
 
 ### Next.js App
+
+```bash
+npm install
+```
 
 You can start development environment for the frontend app by running:
 
@@ -47,3 +45,15 @@ Navigate to http://localhost:3000
 ### Sanity Studio
 
 For this implementation, the Sanity Studio is embedded inside our Next.js app. This means that you just need to start the development environment for the frontend app and navigate to http://localhost:3000/studio.
+
+### Storybook
+
+[Storybook](https://storybook.js.org/) contains all the prebuilt components we'll be working with. To access storybook locally run:
+
+```bash
+npm run storybook
+```
+
+Navigate to http://localhost:6006.
+
+
