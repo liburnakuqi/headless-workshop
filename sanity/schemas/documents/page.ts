@@ -1,5 +1,6 @@
 import { Browser } from 'phosphor-react'
 import { defineArrayMember, defineField, defineType } from 'sanity'
+import { isUniqueOtherThanLang } from '../../helpers/i18n'
 
 export default defineType({
   type: 'document',
@@ -20,6 +21,7 @@ export default defineType({
       title: 'Slug',
       options: {
         source: 'title',
+        isUnique: isUniqueOtherThanLang,
       },
       validation: (rule) => rule.required(),
     }),
