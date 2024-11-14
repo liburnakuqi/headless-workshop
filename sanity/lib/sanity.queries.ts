@@ -11,6 +11,14 @@ export const pagePathsQuery = groq`
   *[_type == "page" && slug.current != null].slug.current
 `
 
+export const getAllPagesQuery = groq `
+    *[_type == "page"] {
+    "slug": slug.current,
+    "lang": _lang,
+    "lastmod": _updatedAt
+  }
+`
+
 export const footerQuery = groq`
   *[_type == "footer"][0]
 `

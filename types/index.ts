@@ -6,3 +6,9 @@ export interface PagePayload {
   title?: string
   slug?: string
 }
+
+export interface SitemapPayload{
+  slug: string,
+  lang: string,
+  lastmod: string
+}
