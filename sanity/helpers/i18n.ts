@@ -1,3 +1,11 @@
+import { SlugValidationContext } from "sanity"
+
+export function getLangQuery() {
+    return `((_lang == $locale) || ($locale == 'en-GB' && (_lang == $locale || _lang == null)))`
+  }
+
+export const getLangParam = (locale: string) => locale === "en-GB" || !locale ? "en-GB" : locale;
+
 export function getLangTitleByLocale(locale: string) {
     switch (locale) {
     case "de-DE":

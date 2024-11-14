@@ -11,6 +11,7 @@ import {
   getPagePaths,
 } from '../sanity/lib/sanity.client'
 import { buildComponent } from 'utils/buildComponent'
+import { getLangParam } from '../sanity/helpers/i18n'
 
 const PagePreview = lazy(() => import('layout/Preview'))
 
@@ -60,12 +61,7 @@ export default function ProjectSlugRoute(props: PageProps) {
   return <Page page={page} />
 }
 
-export const getStaticProps: GetStaticProps<
-  PageProps,
-  Query,
-  PreviewData
-> = async (ctx) => {
-  const { preview = false, previewData = {}, params = {} } = ctx
+export const getStaticProps: any = async ({ preview = false, previewData = {}, params = {}, locale }) => {
   const token = previewData.token
 
   const [page, navigation, footer] = await Promise.all([
@@ -75,6 +71,7 @@ export const getStaticProps: GetStaticProps<
       query: pagesBySlugQuery,
       params: {
         slug: params.slug ? `/${params.slug.join('/')}` : '/',
+        locale: locale,
       },
     }),
     getNavigation({ token }),

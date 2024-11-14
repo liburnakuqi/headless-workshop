@@ -1,7 +1,8 @@
 import { groq } from 'next-sanity'
+import { getLangQuery } from '../helpers/i18n'
 
 export const pagesBySlugQuery = groq`
-  *[_type == "page" && slug.current == $slug][0] {
+  *[_type == "page" && slug.current == $slug && ${getLangQuery()}][0] {
     ...,
     "slug": slug.current,
   }
