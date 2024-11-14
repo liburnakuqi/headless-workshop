@@ -1,5 +1,5 @@
 import { createClient } from 'next-sanity'
-import type { PagePayload } from 'types'
+import type { PagePayload, SitemapPayload } from 'types'
 
 import { apiVersion, dataset, projectId, useCdn } from './sanity.api'
 import { footerQuery, navigationQuery } from './sanity.queries'
@@ -32,13 +32,23 @@ export async function getNavigation({
 export async function getPageBySlug({
   token,
   query,
-  params,
+  params
 }: {
   query: string
   token?: string
   params?: any
 }): Promise<PagePayload | undefined> {
   return await sanityClient(token)?.fetch(query, params)
+}
+
+export async function getAllPages({
+  token,
+  query,
+}: {
+  query: string
+  token?: string
+}): Promise<SitemapPayload[]| undefined> {
+  return await sanityClient(token)?.fetch(query)
 }
 
 export async function getPagePaths(pagePaths): Promise<string[]> {
