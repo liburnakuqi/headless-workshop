@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import { usePreview } from '../sanity/lib/sanity.preview'
 
 export default function Preview({
@@ -11,7 +12,8 @@ export default function Preview({
   pageQuery: string
   slug?: string
 }) {
-  const page: any = usePreview(token, pageQuery, { slug })
+  const { locale } = useRouter()
+  const page: any = usePreview(token, pageQuery, { slug, locale })
 
   if (!page) {
     return (
