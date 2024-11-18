@@ -25,7 +25,7 @@ export const MediaModule = ({
   isDark = false,
 }: Props) => {
   return (
-    <div className={isDark ? 'bg-primary-200' : 'bg-grey-100'}>
+    <div className={isDark ? 'bg-secondary-600' : 'bg-primary-100'}>
       <div className="container mx-auto">
         <div className="grid grid-cols-1 px-5 py-12 sm:gap-x-5 md:grid-cols-2 md:py-20">
           <div

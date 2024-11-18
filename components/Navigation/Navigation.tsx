@@ -21,7 +21,7 @@ export const Navigation = ({ menu }: Props) => {
       <div className="absolute w-full px-5 pt-6">
         <div className="flex justify-between">
           <Link href={'/'}>
-            <NavLogo />
+            Logo
           </Link>
           <nav>
             {menu && (

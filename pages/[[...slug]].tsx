@@ -33,6 +33,8 @@ interface PreviewData {
 export default function ProjectSlugRoute(props: PageProps) {
   const { page, preview, token } = props
 
+  console.log("page", page);
+
   const Page = ({ page }) => (
     <>{page?.sections?.map((section) => buildComponent(section))}</>
   )

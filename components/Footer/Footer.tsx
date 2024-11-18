@@ -20,11 +20,11 @@ export type Props = FooterProps
 
 export const Footer = ({ copyright, socialLinks, privacyPolicy }: Props) => {
   return (
-    <footer className="bg-primary-700 py-8 md:py-16">
+    <footer className="bg-primary-300 py-8 md:py-16">
       <div className="container mx-auto px-5 text-white">
         <div>
           <Link href={'/'}>
-            <FooterLogo />
+            Logo
           </Link>
         </div>
         <div className="flex flex-col-reverse gap-12 pt-12 md:flex-row md:items-center md:justify-between md:pt-8">
