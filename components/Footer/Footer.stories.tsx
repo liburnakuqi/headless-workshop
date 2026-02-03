@@ -67,10 +67,6 @@ Default.args = {
     ios: 'https://apps.apple.com/app/handshake/id123456789',
     android: 'https://play.google.com/store/apps/details?id=com.handshake',
   },
-  countrySelector: {
-    label: 'United States',
-    currentCountry: 'United States',
-  },
   legalLinks: [
     { label: 'Privacy policy', url: '/' },
     { label: 'Accessibility', url: '/' },

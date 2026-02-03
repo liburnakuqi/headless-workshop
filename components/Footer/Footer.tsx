@@ -20,10 +20,6 @@ export type FooterProps = {
     ios?: string
     android?: string
   }
-  countrySelector?: {
-    label: string
-    currentCountry: string
-  }
   legalLinks: FooterLink[]
 }
 
@@ -34,7 +30,6 @@ export const Footer = ({
   companyColumn,
   copyright = '',
   appStoreLinks,
-  countrySelector,
   legalLinks = [],
 }: Partial<Props>) => {
   // Early return if no footer data
@@ -139,16 +134,6 @@ export const Footer = ({
                 </div>
               )}
             </div>
-
-            {/* Country Selector */}
-            {countrySelector && (
-              <div className="flex items-center space-x-2">
-                <span className="text-sm text-gray-600">{countrySelector.label}:</span>
-                <select className="text-sm text-gray-900 bg-transparent border-none focus:outline-none cursor-pointer">
-                  <option>{countrySelector.currentCountry}</option>
-                </select>
-              </div>
-            )}
           </div>
         </div>
       </div>

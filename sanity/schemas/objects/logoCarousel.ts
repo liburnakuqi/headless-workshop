@@ -8,10 +8,31 @@ export default defineType({
   icon: ImageIcon,
   fields: [
     defineField({
+      title: 'Layout Type',
+      name: 'layoutType',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Logo Carousel (scrolling logos)', value: 'logos' },
+          { title: 'Testimonials (text + images)', value: 'testimonials' },
+        ],
+      },
+      initialValue: 'logos',
+      description: 'Choose between scrolling logos or testimonial cards',
+    }),
+    defineField({
+      title: 'Title Text',
+      name: 'titleText',
+      type: 'string',
+      description: 'Main title text (e.g., "For people who are (or have been) in your shoes")',
+      hidden: ({ parent }) => parent?.layoutType !== 'testimonials',
+    }),
+    defineField({
       title: 'Heading',
       name: 'heading',
       type: 'string',
-      description: 'Optional heading text above the carousel',
+      description: 'Optional heading text above the carousel (for logo carousel)',
+      hidden: ({ parent }) => parent?.layoutType === 'testimonials',
     }),
     defineField({
       title: 'Show Heading',
@@ -19,26 +40,7 @@ export default defineType({
       type: 'boolean',
       description: 'Whether to display the heading',
       initialValue: true,
-    }),
-    defineField({
-      title: 'Background Color',
-      name: 'backgroundColor',
-      type: 'string',
-      options: {
-        list: [
-          { title: 'Teal (Dark)', value: 'teal' },
-          { title: 'Purple (Dark)', value: 'purple' },
-          { title: 'Custom', value: 'custom' },
-        ],
-      },
-      initialValue: 'teal',
-    }),
-    defineField({
-      title: 'Custom Background Color',
-      name: 'customBackgroundColor',
-      type: 'string',
-      description: 'Hex color code (e.g., #1a1a2e). Only used if Background Color is set to Custom.',
-      hidden: ({ parent }) => parent?.backgroundColor !== 'custom',
+      hidden: ({ parent }) => parent?.layoutType === 'testimonials',
     }),
     defineField({
       title: 'Items',
@@ -56,6 +58,7 @@ export default defineType({
                 hotspot: true,
               },
               description: 'Logo image (will be displayed in white)',
+              hidden: ({ parent }) => parent?.layoutType === 'testimonials',
             }),
             defineField({
               title: 'Image',
@@ -64,19 +67,56 @@ export default defineType({
               options: {
                 hotspot: true,
               },
-              description: 'Alternative image (will be displayed in color)',
+              description: 'Person photo or image (for testimonials) or alternative image (for logos)',
+            }),
+            defineField({
+              title: 'Quote/Testimonial',
+              name: 'quote',
+              type: 'text',
+              description: 'Testimonial or quote text (for testimonial layout)',
+              hidden: ({ parent }) => parent?.layoutType !== 'testimonials',
+            }),
+            defineField({
+              title: 'Author Name',
+              name: 'authorName',
+              type: 'string',
+              description: 'Name of the person giving the testimonial',
+              hidden: ({ parent }) => parent?.layoutType !== 'testimonials',
+            }),
+            defineField({
+              title: 'Author Pronouns',
+              name: 'authorPronouns',
+              type: 'string',
+              description: 'Pronouns (e.g., she/her, he/him, they/them)',
+              hidden: ({ parent }) => parent?.layoutType !== 'testimonials',
+            }),
+            defineField({
+              title: 'University/Company',
+              name: 'university',
+              type: 'string',
+              description: 'University or company name',
+              hidden: ({ parent }) => parent?.layoutType !== 'testimonials',
+            }),
+            defineField({
+              title: 'Class/Year',
+              name: 'classYear',
+              type: 'string',
+              description: 'Class year or graduation year (e.g., Class of 2027)',
+              hidden: ({ parent }) => parent?.layoutType !== 'testimonials',
             }),
             defineField({
               title: 'Name',
               name: 'name',
               type: 'string',
-              description: 'Company or item name (used as fallback or alt text)',
+              description: 'Company or item name (used as fallback or alt text for logos)',
+              hidden: ({ parent }) => parent?.layoutType === 'testimonials',
             }),
             defineField({
               title: 'Logo Alt Text',
               name: 'logoAlt',
               type: 'string',
               description: 'Alternative text for the logo',
+              hidden: ({ parent }) => parent?.layoutType === 'testimonials',
             }),
             defineField({
               title: 'Image Alt Text',
@@ -88,12 +128,15 @@ export default defineType({
           preview: {
             select: {
               name: 'name',
+              authorName: 'authorName',
+              quote: 'quote',
               logo: 'logo',
               image: 'image',
             },
-            prepare({ name, logo, image }) {
+            prepare({ name, authorName, quote, logo, image }) {
               return {
-                title: name || 'Logo Item',
+                title: authorName || name || 'Carousel Item',
+                subtitle: quote ? quote.substring(0, 50) + '...' : '',
                 media: logo || image,
               }
             },

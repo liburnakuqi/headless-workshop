@@ -23,6 +23,10 @@ export default function ImageBox({
       ? image
       : urlForImage(image)?.height(height).width(width).fit('crop').url()
 
+  if (!imageUrl) {
+    return null
+  }
+
   return (
     <Image
       className={className}

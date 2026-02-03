@@ -1,4 +1,5 @@
 import { Globe, Browsers, Compass, SquareHalfBottom } from 'phosphor-react'
+import { JsonView } from './previewPane/JsonView'
 
 export const deskStructure = (S, context) =>
   S.list()
@@ -26,6 +27,12 @@ export const deskStructure = (S, context) =>
                     .id('navigation')
                     .schemaType('navigation')
                     .documentId('navigation')
+                    .views([
+                      S.view.form(),
+                      S.view
+                        .component(JsonView)
+                        .title('JSON'),
+                    ])
                 ),
               S.divider(),
               S.listItem()
@@ -36,6 +43,12 @@ export const deskStructure = (S, context) =>
                     .id('footer')
                     .schemaType('footer')
                     .documentId('footer')
+                    .views([
+                      S.view.form(),
+                      S.view
+                        .component(JsonView)
+                        .title('JSON'),
+                    ])
                 ),
             ])
         ),

@@ -1,5 +1,6 @@
 import { defineField, defineType } from 'sanity'
 import { DocumentTextIcon } from '@sanity/icons'
+import { createBackgroundColorFields, createTextColorField } from '../../lib/helpers/color'
 
 export default defineType({
   type: 'object',
@@ -94,33 +95,26 @@ export default defineType({
       },
       initialValue: 'left',
     }),
-    defineField({
-      title: 'Background Color',
-      name: 'backgroundColor',
-      type: 'string',
-      options: {
-        list: [
-          { title: 'White', value: 'white' },
-          { title: 'Gray', value: 'gray' },
-          { title: 'Light', value: 'light' },
-          { title: 'Dark', value: 'dark' },
-          { title: 'Custom', value: 'custom' },
-        ],
-      },
-      initialValue: 'white',
+    ...createBackgroundColorFields({
+      presetOptions: [
+        { title: 'White', value: 'white' },
+        { title: 'Gray', value: 'gray' },
+        { title: 'Light', value: 'light' },
+        { title: 'Dark', value: 'dark' },
+        { title: 'Custom', value: 'custom' },
+      ],
+      initialPreset: 'white',
     }),
-    defineField({
-      title: 'Custom Background Color',
-      name: 'customBackgroundColor',
-      type: 'string',
-      description: 'Hex color code',
-      hidden: ({ parent }) => parent?.backgroundColor !== 'custom',
+    createTextColorField({
+      name: 'textColor',
+      title: 'Text Color',
+      description: 'Color for text content (optional, overrides Is Dark)',
     }),
     defineField({
       title: 'Is Dark',
       name: 'isDark',
       type: 'boolean',
-      description: 'Use dark text colors',
+      description: 'Use dark text colors (if Text Color is not set)',
       initialValue: false,
     }),
     defineField({

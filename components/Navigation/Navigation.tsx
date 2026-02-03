@@ -28,6 +28,69 @@ export type NavigationProps = {
 
 export type Props = NavigationProps
 
+const MobileMenuItem = ({ item, onClose }: { item: MenuItem; onClose: () => void }) => {
+  const [mobileSubmenuOpen, setMobileSubmenuOpen] = React.useState(false)
+
+  if (!item.submenu) {
+    return (
+      <Link
+        href={item.url || '#'}
+        className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-md"
+        onClick={onClose}
+      >
+        {item.label}
+      </Link>
+    )
+  }
+
+  return (
+    <div>
+      <button
+        onClick={() => setMobileSubmenuOpen(!mobileSubmenuOpen)}
+        className="w-full flex items-center justify-between px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-md"
+      >
+        <span>{item.label}</span>
+        <svg
+          className={`h-5 w-5 transition-transform ${mobileSubmenuOpen ? 'rotate-180' : ''}`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 9l-7 7-7-7"
+          />
+        </svg>
+      </button>
+      {mobileSubmenuOpen && (
+        <div className="pl-4 space-y-1 mt-1">
+          {item.url && (
+            <Link
+              href={item.url}
+              className="block px-3 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md"
+              onClick={onClose}
+            >
+              {item.label} (Main)
+            </Link>
+          )}
+          {item.submenu.map((subItem) => (
+            <Link
+              key={subItem._key}
+              href={subItem.url}
+              className="block px-3 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md"
+              onClick={onClose}
+            >
+              {subItem.label}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
 export const Navigation = ({ menu, ctaButtons }: Props) => {
   const [openDropdown, setOpenDropdown] = React.useState<string | null>(null)
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
@@ -45,14 +108,15 @@ export const Navigation = ({ menu, ctaButtons }: Props) => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex md:items-center md:space-x-1 lg:space-x-2">
-            {menu?.map((item) => (
+            {menu && menu.length > 0 ? (
+              menu.map((item) => (
               <div
                 key={item._key}
                 className="relative group"
                 onMouseEnter={() => item.submenu && setOpenDropdown(item._key)}
                 onMouseLeave={() => setOpenDropdown(null)}
               >
-                {item.url ? (
+                {item.url && !item.submenu ? (
                   <Link
                     href={item.url}
                     className="px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
@@ -60,11 +124,22 @@ export const Navigation = ({ menu, ctaButtons }: Props) => {
                     {item.label}
                   </Link>
                 ) : (
-                  <button className="px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors flex items-center">
-                    {item.label}
+                  <div className="flex items-center">
+                    {item.url ? (
+                      <Link
+                        href={item.url}
+                        className="px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
+                      >
+                        {item.label}
+                      </Link>
+                    ) : (
+                      <span className="px-3 py-2 text-sm font-medium text-gray-700">
+                        {item.label}
+                      </span>
+                    )}
                     {item.submenu && (
                       <svg
-                        className="ml-1 h-4 w-4"
+                        className="ml-1 h-4 w-4 text-gray-700"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -77,18 +152,19 @@ export const Navigation = ({ menu, ctaButtons }: Props) => {
                         />
                       </svg>
                     )}
-                  </button>
+                  </div>
                 )}
 
                 {/* Dropdown Menu */}
                 {item.submenu && openDropdown === item._key && (
-                  <div className="absolute left-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                  <div className="absolute left-0 top-full mt-1 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
                     <div className="py-1">
                       {item.submenu.map((subItem) => (
                         <Link
                           key={subItem._key}
                           href={subItem.url}
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                          onClick={() => setOpenDropdown(null)}
                         >
                           {subItem.label}
                         </Link>
@@ -97,12 +173,14 @@ export const Navigation = ({ menu, ctaButtons }: Props) => {
                   </div>
                 )}
               </div>
-            ))}
+              ))
+            ) : null}
           </div>
 
           {/* CTA Buttons */}
-          <div className="hidden md:flex md:items-center md:space-x-4">
-            {ctaButtons?.map((cta, index) => (
+          {ctaButtons && ctaButtons.length > 0 && (
+            <div className="hidden md:flex md:items-center md:space-x-4">
+              {ctaButtons.map((cta, index) => (
               <Link
                 key={index}
                 href={cta.url}
@@ -114,8 +192,9 @@ export const Navigation = ({ menu, ctaButtons }: Props) => {
               >
                 {cta.label}
               </Link>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
 
           {/* Mobile menu button */}
           <div className="md:hidden">
@@ -153,40 +232,17 @@ export const Navigation = ({ menu, ctaButtons }: Props) => {
         {mobileMenuOpen && (
           <div className="md:hidden border-t border-gray-200">
             <div className="px-2 pt-2 pb-3 space-y-1">
-              {menu?.map((item) => (
+              {menu && menu.length > 0 ? (
+                menu.map((item) => (
                 <div key={item._key}>
-                  {item.url ? (
-                    <Link
-                      href={item.url}
-                      className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-md"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      {item.label}
-                    </Link>
-                  ) : (
-                    <div>
-                      <div className="block px-3 py-2 text-base font-medium text-gray-700">
-                        {item.label}
-                      </div>
-                      {item.submenu && (
-                        <div className="pl-4 space-y-1">
-                          {item.submenu.map((subItem) => (
-                            <Link
-                              key={subItem._key}
-                              href={subItem.url}
-                              className="block px-3 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md"
-                              onClick={() => setMobileMenuOpen(false)}
-                            >
-                              {subItem.label}
-                            </Link>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  )}
+                  <MobileMenuItem
+                    item={item}
+                    onClose={() => setMobileMenuOpen(false)}
+                  />
                 </div>
-              ))}
-              {ctaButtons && (
+                ))
+              ) : null}
+              {ctaButtons && ctaButtons.length > 0 && (
                 <div className="pt-4 space-y-2">
                   {ctaButtons.map((cta, index) => (
                     <Link

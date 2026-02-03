@@ -1,5 +1,6 @@
 import { defineField, defineType } from 'sanity'
 import { ImageIcon } from '@sanity/icons'
+import { createColorField } from '../../lib/helpers/color'
 
 export default defineType({
   type: 'object',
@@ -79,9 +80,16 @@ export default defineType({
           { title: 'White', value: 'white' },
           { title: 'Light Gray', value: 'gray' },
           { title: 'Light Green', value: 'green' },
+          { title: 'Custom', value: 'custom' },
         ],
       },
       initialValue: 'white',
+    }),
+    createColorField({
+      name: 'customBackgroundColor',
+      title: 'Custom Background Color',
+      description: 'Pick a custom background color. Only used if Background Color is set to Custom.',
+      hidden: ({ parent }) => parent?.backgroundColor !== 'custom',
     }),
   ],
   preview: {

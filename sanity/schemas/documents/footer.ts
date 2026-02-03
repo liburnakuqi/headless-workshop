@@ -42,23 +42,6 @@ export default defineType({
       ],
     }),
     defineField({
-      title: 'Country Selector',
-      name: 'countrySelector',
-      type: 'object',
-      fields: [
-        defineField({
-          title: 'Label',
-          name: 'label',
-          type: 'string',
-        }),
-        defineField({
-          title: 'Current Country',
-          name: 'currentCountry',
-          type: 'string',
-        }),
-      ],
-    }),
-    defineField({
       title: 'Legal Links',
       name: 'legalLinks',
       type: 'array',

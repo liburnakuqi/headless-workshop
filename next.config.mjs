@@ -22,6 +22,16 @@ const config = {
     /// Set this to false if you want production builds to abort if there's lint errors
     ignoreDuringBuilds: process.env.VERCEL_ENV === 'production',
   },
+  webpack: (config, { isServer }) => {
+    // Fix for framer-motion nested dependency issue
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+      }
+    }
+    return config
+  },
   i18n,
 }
 

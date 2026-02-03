@@ -26,7 +26,6 @@ Default.args = {
     { name: 'P&G', logo: null },
     { name: 'Google', logo: null },
   ],
-  backgroundColor: 'teal',
   showHeading: true,
 }
 
@@ -40,7 +39,6 @@ WithImages.args = {
     { name: 'Company 4', image: null, imageAlt: 'Company logo' },
     { name: 'Company 5', image: null, imageAlt: 'Company logo' },
   ],
-  backgroundColor: 'purple',
   showHeading: true,
 }
 
@@ -52,6 +50,5 @@ NoHeading.args = {
     { name: 'Logo 3', logo: null },
     { name: 'Logo 4', logo: null },
   ],
-  backgroundColor: 'teal',
   showHeading: false,
 }

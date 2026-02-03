@@ -102,11 +102,11 @@ export const ContentGrid = ({
   const getPaddingClass = () => {
     switch (itemPadding) {
       case 'small':
-        return 'p-4'
-      case 'large':
-        return 'p-8 lg:p-10'
-      default:
         return 'p-6'
+      case 'large':
+        return 'p-10 lg:p-12'
+      default:
+        return 'p-8 lg:p-10'
     }
   }
   
@@ -134,9 +134,6 @@ export const ContentGrid = ({
     }
   }
   
-  // Determine if it's a stats layout (has value + label)
-  const isStatsLayout = safeItems.length > 0 && safeItems.some(item => item.value && item.label)
-  
   // Determine if it's a wide layout (2 items)
   const isWideLayout = itemCount === 2
   
@@ -146,22 +143,30 @@ export const ContentGrid = ({
   
   const sectionBgClass = getBackgroundClass()
   
+  // Determine if it's a stats layout (has value + label)
+  const isStatsLayout = safeItems.length > 0 && safeItems.some(item => item.value && item.label)
+  
+  // Reduce spacing for stats layout
+  const sectionPadding = isStatsLayout ? 'py-12 lg:py-16' : 'py-20 lg:py-32'
+  const headingMargin = isStatsLayout ? 'mb-8 lg:mb-10' : 'mb-16 lg:mb-20'
+  const headingSize = isStatsLayout ? 'text-2xl md:text-3xl lg:text-4xl mb-4' : 'text-4xl font-bold text-gray-900 md:text-5xl lg:text-6xl mb-6'
+
   return (
     <section 
-      className={`${sectionBgClass} py-16 lg:py-24`}
+      className={`${sectionBgClass} ${sectionPadding}`}
       style={bgStyle}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {(heading || subheading) && (
           <ScrollAnimation direction="up" delay={0.2}>
-            <div className={`mb-12 lg:mb-16 ${getHeadingAlignClass()}`}>
+            <div className={`${headingMargin} ${getHeadingAlignClass()}`}>
               {heading && (
-                <h2 className="text-3xl font-bold text-gray-900 md:text-4xl lg:text-5xl mb-4">
+                <h2 className={`${isStatsLayout ? 'font-normal' : 'font-bold'} text-gray-900 ${headingSize}`}>
                   {heading}
                 </h2>
               )}
               {subheading && (
-                <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                <p className="text-xl text-gray-600 max-w-3xl mx-auto">
                   {subheading}
                 </p>
               )}
@@ -227,12 +232,12 @@ export const ContentGrid = ({
                 
                 {/* Image (for features) */}
                 {item.image && (
-                  <div className={`mb-4 overflow-hidden rounded-lg ${isWideLayout ? 'mb-6' : ''}`}>
+                  <div className={`mb-6 overflow-hidden rounded-lg ${isWideLayout ? 'mb-8' : ''}`}>
                     <ImageBox
                       image={item.image}
                       alt={item.imageAlt || item.title || `Image ${index + 1}`}
                       className={`w-full object-cover group-hover:scale-105 transition-transform duration-300 ${
-                        isWideLayout ? 'h-64 lg:h-80' : 'h-48'
+                        isWideLayout ? 'h-80 lg:h-96 xl:h-[28rem]' : 'h-64 lg:h-80'
                       }`}
                     />
                   </div>
@@ -240,8 +245,8 @@ export const ContentGrid = ({
                 
                 {/* Title */}
                 {item.title && (
-                  <h3 className={`font-semibold text-gray-900 mb-2 ${
-                    isWideLayout ? 'text-2xl lg:text-3xl' : 'text-xl'
+                  <h3 className={`font-semibold text-gray-900 mb-3 ${
+                    isWideLayout ? 'text-3xl lg:text-4xl' : 'text-2xl lg:text-3xl'
                   }`}>
                     {item.title}
                   </h3>
@@ -249,8 +254,8 @@ export const ContentGrid = ({
                 
                 {/* Subtitle (for case studies) */}
                 {item.subtitle && (
-                  <h4 className={`font-medium text-gray-800 mb-3 ${
-                    isWideLayout ? 'text-lg lg:text-xl' : 'text-base'
+                  <h4 className={`font-medium text-gray-800 mb-4 ${
+                    isWideLayout ? 'text-xl lg:text-2xl' : 'text-lg lg:text-xl'
                   }`}>
                     {item.subtitle}
                   </h4>
@@ -259,7 +264,7 @@ export const ContentGrid = ({
                 {/* Description */}
                 {item.description && (
                   <p className={`text-gray-600 leading-relaxed ${
-                    isWideLayout ? 'text-lg lg:text-xl' : ''
+                    isWideLayout ? 'text-xl lg:text-2xl' : 'text-lg lg:text-xl'
                   }`}>
                     {item.description}
                   </p>

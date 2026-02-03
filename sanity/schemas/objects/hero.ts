@@ -1,5 +1,6 @@
 import { defineField, defineType } from 'sanity'
 import { ImageIcon } from '@sanity/icons'
+import { createBackgroundColorFields } from '../../lib/helpers/color'
 
 export default defineType({
   type: 'object',
@@ -117,26 +118,14 @@ export default defineType({
       of: [{ type: 'Cta' }],
       description: 'Multiple CTA buttons (for centered/video layout)',
     }),
-    defineField({
-      title: 'Background Color',
-      name: 'backgroundColor',
-      type: 'string',
-      options: {
-        list: [
-          { title: 'Gradient', value: 'gradient' },
-          { title: 'White', value: 'white' },
-          { title: 'Dark', value: 'dark' },
-          { title: 'Custom', value: 'custom' },
-        ],
-      },
-      initialValue: 'gradient',
-    }),
-    defineField({
-      title: 'Custom Background Color',
-      name: 'customBackgroundColor',
-      type: 'string',
-      description: 'Hex color code (e.g., #1a1a2e)',
-      hidden: ({ parent }) => parent?.backgroundColor !== 'custom',
+    ...createBackgroundColorFields({
+      presetOptions: [
+        { title: 'Gradient', value: 'gradient' },
+        { title: 'White', value: 'white' },
+        { title: 'Dark', value: 'dark' },
+        { title: 'Custom', value: 'custom' },
+      ],
+      initialPreset: 'gradient',
     }),
   ],
   preview: {

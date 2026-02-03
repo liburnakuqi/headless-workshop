@@ -45,7 +45,6 @@ export default defineConfig({
   dataset: dataset!,
   title: title,
   schema: {
-    // If you want more content types, you can add them to this array
     types: [
       // Singletons
       // Documents

@@ -1,5 +1,6 @@
 import { defineField, defineType } from 'sanity'
 import { ImageIcon } from '@sanity/icons'
+import { createBackgroundColorFields } from '../../lib/helpers/color'
 
 export default defineType({
   type: 'object',
@@ -149,26 +150,14 @@ export default defineType({
       description: 'Show section background',
       initialValue: true,
     }),
-    defineField({
-      title: 'Background Color',
-      name: 'backgroundColor',
-      type: 'string',
-      options: {
-        list: [
-          { title: 'White', value: 'white' },
-          { title: 'Gray', value: 'gray' },
-          { title: 'Green', value: 'green' },
-          { title: 'Custom', value: 'custom' },
-        ],
-      },
-      initialValue: 'white',
-    }),
-    defineField({
-      title: 'Custom Background Color',
-      name: 'customBackgroundColor',
-      type: 'string',
-      description: 'Hex color code (e.g., #F8FCF9). Only used if Background Color is Custom.',
-      hidden: ({ parent }) => parent?.backgroundColor !== 'custom',
+    ...createBackgroundColorFields({
+      presetOptions: [
+        { title: 'White', value: 'white' },
+        { title: 'Gray', value: 'gray' },
+        { title: 'Green', value: 'green' },
+        { title: 'Custom', value: 'custom' },
+      ],
+      initialPreset: 'white',
     }),
     defineField({
       title: 'Item Padding',

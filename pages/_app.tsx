@@ -33,7 +33,12 @@ function App({ Component, pageProps }: AppProps) {
         `}
       </style>
       {pageProps?.preview && <PreviewBanner />}
-      {!isSanityStudio && <Navigation menu={navigation?.menu} />}
+      {!isSanityStudio && (
+        <Navigation
+          menu={navigation?.menu}
+          ctaButtons={navigation?.ctaButtons}
+        />
+      )}
       <Component {...pageProps} />
       {!isSanityStudio && <Footer {...footer} />}
     </>
