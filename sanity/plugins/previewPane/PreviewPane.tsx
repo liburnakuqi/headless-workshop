@@ -83,10 +83,20 @@ const Iframe = memo(function Iframe(props: IframeProps) {
     url.searchParams.set('secret', secret)
   }
 
+  console.log('[PreviewPane] Loading iframe with URL:', url.toString())
+  console.log('[PreviewPane] Preview params:', {
+    documentType,
+    slug,
+    hasSecret: !!secret,
+    origin: location.origin,
+  })
+
   return (
     <iframe
       style={{ width: '100%', height: '100%', position: 'relative', zIndex: 1 }}
       src={url.toString()}
+      onLoad={() => console.log('[PreviewPane] Iframe loaded successfully')}
+      onError={(e) => console.error('[PreviewPane] Iframe error:', e)}
     />
   )
 })

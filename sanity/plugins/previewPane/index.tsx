@@ -8,6 +8,7 @@ import { DefaultDocumentNodeResolver } from 'sanity/desk'
 
 import { PREVIEWABLE_DOCUMENT_TYPES } from '../../../sanity.config'
 import { PreviewPane } from './PreviewPane'
+import { JsonView } from './JsonView'
 
 export const previewDocumentNode = ({
   apiVersion,
@@ -31,6 +32,10 @@ export const previewDocumentNode = ({
             />
           ))
           .title('Preview'),
+        // JSON View
+        S.view
+          .component((props) => <JsonView {...props} />)
+          .title('JSON'),
       ])
     }
 

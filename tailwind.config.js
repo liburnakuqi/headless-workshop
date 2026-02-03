@@ -39,6 +39,18 @@ module.exports = {
           400: '#D9D9D9',
           500: '#CCCCCC',
         },
+        // Handshake-inspired modern palette
+        handshake: {
+          blue: '#0066FF',
+          'blue-dark': '#0052CC',
+          'blue-light': '#E6F2FF',
+          purple: '#7C3AED',
+          'purple-light': '#F3F4F6',
+          green: '#10B981',
+          'green-light': '#D1FAE5',
+          orange: '#F59E0B',
+          'orange-light': '#FEF3C7',
+        },
       },
     },
   },

@@ -35,10 +35,25 @@ const preview: Preview = {
 // Workaround to allowing Nextjs image to render properly
 const OriginalNextImage = NextImage.default
 
-Object.defineProperty(NextImage, 'default', {
-  configurable: true,
-  value: (props) =>
-    React.createElement(OriginalNextImage, { ...props, unoptimized: true }),
-})
+// Use a flag to prevent multiple redefinitions (for hot reload)
+const imageMockKey = '__next_image_mocked__'
+if (!(NextImage as any)[imageMockKey]) {
+  try {
+    const descriptor = Object.getOwnPropertyDescriptor(NextImage, 'default')
+    if (!descriptor || descriptor.configurable) {
+      Object.defineProperty(NextImage, 'default', {
+        configurable: true,
+        writable: true,
+        enumerable: true,
+        value: (props: any) =>
+          React.createElement(OriginalNextImage, { ...props, unoptimized: true }),
+      })
+      ;(NextImage as any)[imageMockKey] = true
+    }
+  } catch (e) {
+    // Silently fail if we can't redefine
+    console.warn('Could not redefine NextImage.default:', e)
+  }
+}
 
 export default preview

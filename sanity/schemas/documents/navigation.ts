@@ -1,11 +1,10 @@
 import { Link } from 'phosphor-react'
 import { defineField, defineType } from 'sanity'
 
-const menuLink = {
-  title: 'Menu Link',
-  name: 'menuLink',
+const subMenuItem = {
+  title: 'Submenu Item',
+  name: 'subMenuItem',
   type: 'object',
-  icon: Link,
   fields: [
     defineField({
       title: 'Label',
@@ -22,6 +21,61 @@ const menuLink = {
   ],
 }
 
+const menuItem = {
+  title: 'Menu Item',
+  name: 'menuItem',
+  type: 'object',
+  icon: Link,
+  fields: [
+    defineField({
+      title: 'Label',
+      name: 'label',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      title: 'Url',
+      name: 'url',
+      type: 'string',
+      description: 'Optional - leave empty if using submenu',
+    }),
+    defineField({
+      title: 'Submenu',
+      name: 'submenu',
+      type: 'array',
+      of: [subMenuItem],
+      description: 'Optional - add submenu items if no direct URL',
+    }),
+  ],
+}
+
+const ctaButton = {
+  title: 'CTA Button',
+  name: 'ctaButton',
+  type: 'object',
+  fields: [
+    defineField({
+      title: 'Label',
+      name: 'label',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      title: 'Url',
+      name: 'url',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      title: 'Is Primary',
+      name: 'isPrimary',
+      type: 'boolean',
+      description: 'Primary button (blue) or secondary (text)',
+      initialValue: false,
+    }),
+  ],
+}
+
 export default defineType({
   type: 'document',
   name: 'navigation',
@@ -31,7 +85,14 @@ export default defineType({
       title: 'Menu',
       name: 'menu',
       type: 'array',
-      of: [menuLink],
+      of: [menuItem],
+    }),
+    defineField({
+      title: 'CTA Buttons',
+      name: 'ctaButtons',
+      type: 'array',
+      of: [ctaButton],
+      description: 'Call-to-action buttons in the header',
     }),
   ],
   preview: {

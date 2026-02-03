@@ -1,6 +1,4 @@
-import { PreviewSuspense } from '@sanity/preview-kit'
-import { PreviewWrapper } from 'components/preview/PreviewWrapper'
-import { GetStaticProps } from 'next'
+import type { GetStaticProps } from 'next'
 import { lazy } from 'react'
 import { PagePayload } from 'types'
 import { pagesBySlugQuery, pagePathsQuery } from '../sanity/lib/sanity.queries'
@@ -10,8 +8,9 @@ import {
   getPageBySlug,
   getPagePaths,
 } from '../sanity/lib/sanity.client'
-import { buildComponent } from 'utils/buildComponent'
+import { buildComponents } from 'utils/buildComponent'
 import { getLangParam } from '../sanity/helpers/i18n'
+import { getGlobalData } from '../lib/cache/globalData'
 
 const PagePreview = lazy(() => import('layout/Preview'))
 
@@ -33,47 +32,40 @@ interface PreviewData {
 export default function ProjectSlugRoute(props: PageProps) {
   const { page, preview, token } = props
 
-  console.log("page", page);
-
-  const Page = ({ page }) => (
-    <>{page?.sections?.map((section) => buildComponent(section))}</>
-  )
-  if (preview) {
-    return (
-      <PreviewSuspense
-        fallback={
-          <PreviewWrapper>
-            <Page page={page} />
-          </PreviewWrapper>
-        }
-      >
-        <PagePreview
-          token={token}
-          PageComponent={Page}
-          pageQuery={pagesBySlugQuery}
-          slug={page?.slug}
-        />
-      </PreviewSuspense>
-    )
+  const renderPage = (p?: PagePayload) => {
+    const sections = p?.sections || []
+    return <>{buildComponents(sections as any)}</>
   }
 
-  return <Page page={page} />
+  if (preview) {
+    return (PagePreview as any)({
+      token,
+      PageComponent: ({ page: p }: { page: PagePayload }) => renderPage(p),
+      pageQuery: pagesBySlugQuery,
+      slug: page?.slug,
+    })
+  }
+
+  return renderPage(page)
 }
 
-export const getStaticProps: any = async ({ preview = false, previewData = {}, params = {}, locale }) => {
-  const token = previewData.token
+export const getStaticProps: GetStaticProps<PageProps> = async (ctx) => {
+  const { preview = false, previewData = {}, params = {}, locale } = ctx as any
+  const token = (previewData as any)?.token
+  const slug = (params as any)?.slug ? `/${(params as any).slug.join('/')}` : '/'
 
-  const [page, navigation, footer] = await Promise.all([
+  const normalizedLocale = getLangParam(locale || 'en-GB')
+
+  const [page, globalData] = await Promise.all([
     getPageBySlug({
       token,
       query: pagesBySlugQuery,
       params: {
-        slug: params.slug ? `/${params.slug.join('/')}` : '/',
-        locale: locale,
+        slug,
+        locale: normalizedLocale,
       },
     }),
-    getNavigation({ token }),
-    getFooter({ token }),
+    getGlobalData(token),
   ])
 
   if (!page) {
@@ -85,13 +77,18 @@ export const getStaticProps: any = async ({ preview = false, previewData = {}, p
   return {
     props: {
       global: {
-        navigation,
-        footer,
+        navigation: globalData.navigation,
+        footer: globalData.footer,
       },
-      page,
-      preview,
-      token: previewData.token ?? null,
+      page: {
+        ...page,
+        sections: page.sections || [],
+      },
+      preview: !!preview,
+      token: token ?? null,
     },
+    // No revalidate needed - fresh data on each deployment via getStaticProps
+    // Pages are statically generated at build time with fresh Navigation/Footer
   }
 }
 

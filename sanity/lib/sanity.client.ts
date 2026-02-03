@@ -2,7 +2,7 @@ import { createClient } from 'next-sanity'
 import type { PagePayload, SitemapPayload } from 'types'
 
 import { apiVersion, dataset, projectId, useCdn } from './sanity.api'
-import { footerQuery, navigationQuery } from './sanity.queries'
+import { footerQuery, navigationQuery, pagesBySlugQuery } from './sanity.queries'
 
 /**
  * Checks if it's safe to create a client instance, as `@sanity/client` will throw an error if `projectId` is false

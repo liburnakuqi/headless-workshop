@@ -1,26 +1,4 @@
-import { Link } from 'phosphor-react'
 import { defineField, defineType } from 'sanity'
-
-const socialLink = {
-  title: 'Social Link',
-  name: 'socialLink',
-  type: 'object',
-  icon: Link,
-  fields: [
-    defineField({
-      title: 'Label',
-      name: 'label',
-      type: 'string',
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      title: 'Url',
-      name: 'url',
-      type: 'string',
-      validation: (Rule) => Rule.required(),
-    }),
-  ],
-}
 
 export default defineType({
   type: 'document',
@@ -28,34 +6,64 @@ export default defineType({
   title: 'Footer',
   fields: [
     defineField({
-      title: 'Social Links',
-      name: 'socialLinks',
+      title: 'Columns',
+      name: 'columns',
       type: 'array',
-      of: [socialLink],
+      of: [{ type: 'footerColumn' }],
+      description: 'Main navigation columns (Students, Employers, Career centers)',
+    }),
+    defineField({
+      title: 'Company Column',
+      name: 'companyColumn',
+      type: 'footerColumn',
+      description: 'Company section links',
     }),
     defineField({
       title: 'Copyright',
       name: 'copyright',
       type: 'string',
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
-      title: 'Privacy Policy',
-      name: 'privacyPolicy',
+      title: 'App Store Links',
+      name: 'appStoreLinks',
+      type: 'object',
+      fields: [
+        defineField({
+          title: 'iOS App Store URL',
+          name: 'ios',
+          type: 'url',
+        }),
+        defineField({
+          title: 'Google Play Store URL',
+          name: 'android',
+          type: 'url',
+        }),
+      ],
+    }),
+    defineField({
+      title: 'Country Selector',
+      name: 'countrySelector',
       type: 'object',
       fields: [
         defineField({
           title: 'Label',
           name: 'label',
           type: 'string',
-          validation: (Rule) => Rule.required(),
         }),
         defineField({
-          title: 'Url',
-          name: 'url',
+          title: 'Current Country',
+          name: 'currentCountry',
           type: 'string',
-          validation: (Rule) => Rule.required(),
         }),
       ],
+    }),
+    defineField({
+      title: 'Legal Links',
+      name: 'legalLinks',
+      type: 'array',
+      of: [{ type: 'footerLink' }],
+      description: 'Privacy policy, Terms of service, etc.',
     }),
   ],
   preview: {

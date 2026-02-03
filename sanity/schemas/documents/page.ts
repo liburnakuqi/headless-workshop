@@ -30,12 +30,13 @@ export default defineType({
       name: 'sections',
       title: 'Sections',
       of: [
-        defineArrayMember({ type: 'MainHero' }),
-        defineArrayMember({ type: 'Quote' }),
-        defineArrayMember({ type: 'FeaturedItems' }),
-        defineArrayMember({ type: 'MediaModule' }),
-        defineArrayMember({ type: 'CtaBanner' }),
-        defineArrayMember({ type: 'FeaturedText' })
+        defineArrayMember({ type: 'Hero' }),
+        defineArrayMember({ type: 'ContentBlock' }),
+        defineArrayMember({ type: 'Stats' }),
+        defineArrayMember({ type: 'Features' }),
+        defineArrayMember({ type: 'CaseStudies' }),
+        defineArrayMember({ type: 'ContentGrid' }),
+        defineArrayMember({ type: 'LogoCarousel' })
       ]
     })
   ],

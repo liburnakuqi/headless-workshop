@@ -14,6 +14,7 @@ import {
   previewSecretId,
   projectId,
 } from './sanity/lib/sanity.api'
+
 import { deskStructure } from './sanity/plugins/deskStructure'
 import { previewDocumentNode } from './sanity/plugins/previewPane'
 import { productionUrl } from './sanity/plugins/productionUrl'
@@ -23,23 +24,26 @@ import navigation from './sanity/schemas/documents/navigation'
 import { media } from 'sanity-plugin-media'
 import page from './sanity/schemas/documents/page'
 import cta from './sanity/schemas/objects/cta'
-import ctaBanner from './sanity/schemas/objects/ctaBanner'
-import featuredItems from './sanity/schemas/objects/featuredItems'
-import featuredText from './sanity/schemas/objects/featuredText'
-import mainHero from './sanity/schemas/objects/mainHero'
-import quote from './sanity/schemas/objects/quote'
-import mediaModule from './sanity/schemas/objects/mediaModule'
+import footerColumn from './sanity/schemas/objects/footerColumn'
+import footerLink from './sanity/schemas/objects/footerLink'
+import logoCarousel from './sanity/schemas/objects/logoCarousel'
+import contentGrid from './sanity/schemas/objects/contentGrid'
+import hero from './sanity/schemas/objects/hero'
+import contentBlock from './sanity/schemas/objects/contentBlock'
+import stats from './sanity/schemas/objects/stats'
+import features from './sanity/schemas/objects/features'
+import caseStudies from './sanity/schemas/objects/caseStudies'
 
-
-const title = process.env.NEXT_PUBLIC_SANITY_PROJECT_TITLE
+// Get title from environment variable
+const title = typeof process !== 'undefined' && process.env?.NEXT_PUBLIC_SANITY_PROJECT_TITLE || undefined
 
 export const PREVIEWABLE_DOCUMENT_TYPES: string[] = [page.name]
 
 export default defineConfig({
   basePath: '/studio',
-  projectId: projectId || '',
-  dataset: dataset || '',
-  title,
+  projectId: projectId!,
+  dataset: dataset!,
+  title: title,
   schema: {
     // If you want more content types, you can add them to this array
     types: [
@@ -49,19 +53,22 @@ export default defineConfig({
       navigation,
       footer,
       // Objects
-      mainHero,
-      quote,
-      featuredItems,
       cta,
-      ctaBanner,
-      featuredText,
-      mediaModule,
+      footerColumn,
+      footerLink,
+      logoCarousel,
+      contentGrid,
+      hero,
+      contentBlock,
+      stats,
+      features,
+      caseStudies,
     ],
   },
   plugins: [
     deskTool({
       structure: deskStructure,
-      // `defaultDocumentNode` is responsible for adding a “Preview” tab to the document pane
+      // `defaultDocumentNode` is responsible for adding a "Preview" tab to the document pane
       defaultDocumentNode: previewDocumentNode({ apiVersion, previewSecretId }),
     }),
     documentI18n({
