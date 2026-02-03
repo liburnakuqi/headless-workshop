@@ -5,7 +5,7 @@ import {
   projectId,
   useCdn,
 } from '../../sanity/lib/sanity.api'
-import { resolveHref } from '../../sanity/lib/sanity.links'
+import { resolveHref } from '../../sanity/lib/helpers/links'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import type { PageConfig } from 'next/types'
 import { createClient } from 'next-sanity'

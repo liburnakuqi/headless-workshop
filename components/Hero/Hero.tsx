@@ -1,6 +1,6 @@
 import ImageBox from 'components/shared/ImageBox'
 import { Parallax, ScrollAnimation } from 'components/shared/ScrollAnimation'
-import { urlForFile } from '../../sanity/lib/sanity.file'
+import { urlForFile } from '../../sanity/lib/helpers/file'
 import * as React from 'react'
 import { Cta, CtaProps } from '../Cta/Cta'
 

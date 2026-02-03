@@ -1,23 +1,84 @@
 import { createClient } from 'next-sanity'
+import { groq } from 'next-sanity'
 import type { PagePayload, SitemapPayload } from 'types'
-
 import { apiVersion, dataset, projectId, useCdn } from './sanity.api'
-import { footerQuery, navigationQuery, pagesBySlugQuery } from './sanity.queries'
+import { getLangQuery } from '../helpers/i18n'
 
 /**
- * Checks if it's safe to create a client instance, as `@sanity/client` will throw an error if `projectId` is false
+ * Sanity Client
+ * 
+ * Creates and manages Sanity client instances for data fetching
  */
+
 const sanityClient = (token?: string) => {
   return projectId
     ? createClient({ projectId, dataset, apiVersion, useCdn, token })
     : null
 }
 
+/**
+ * GROQ Queries
+ * 
+ * All Sanity queries used throughout the application
+ */
+
+const heroFragment = groq`
+  _type == "Hero" => {
+    ...,
+    videoUrl {
+      asset-> {
+        url,
+        _ref,
+        _type,
+        originalFilename,
+        size
+      }
+    }
+  }
+`
+
+export const pagesBySlugQuery = groq`
+  *[_type == "page" && slug.current == $slug && ${getLangQuery()}][0] {
+    ...,
+    "slug": slug.current,
+    sections[] {
+      ...,
+      ${heroFragment}
+    }
+  }
+`
+
+export const pagePathsQuery = groq`
+  *[_type == "page" && slug.current != null].slug.current
+`
+
+export const getAllPagesQuery = groq`
+  *[_type == "page"] {
+    "slug": slug.current,
+    "lang": _lang,
+    "lastmod": _updatedAt
+  }
+`
+
+export const footerQuery = groq`
+  *[_type == "footer"][0]
+`
+
+export const navigationQuery = groq`
+  *[_type == "navigation"][0]
+`
+
+/**
+ * Data Fetching Functions
+ * 
+ * Functions to fetch data from Sanity using the queries above
+ */
+
 export async function getFooter({
   token,
 }: {
   token?: string
-}): Promise<string | undefined> {
+}): Promise<any | undefined> {
   return await sanityClient(token)?.fetch(footerQuery)
 }
 
@@ -25,7 +86,7 @@ export async function getNavigation({
   token,
 }: {
   token?: string
-}): Promise<string | undefined> {
+}): Promise<any | undefined> {
   return await sanityClient(token)?.fetch(navigationQuery)
 }
 
@@ -47,10 +108,10 @@ export async function getAllPages({
 }: {
   query: string
   token?: string
-}): Promise<SitemapPayload[]| undefined> {
+}): Promise<SitemapPayload[] | undefined> {
   return await sanityClient(token)?.fetch(query)
 }
 
-export async function getPagePaths(pagePaths): Promise<string[]> {
-  return await sanityClient()?.fetch(pagePaths)
+export async function getPagePaths(pagePaths: string): Promise<string[]> {
+  return await sanityClient()?.fetch(pagePaths) || []
 }

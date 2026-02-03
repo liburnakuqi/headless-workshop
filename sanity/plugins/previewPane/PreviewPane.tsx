@@ -1,5 +1,5 @@
 import { Card, Text } from '@sanity/ui'
-import { resolveHref } from '../../lib/sanity.links'
+import { resolveHref } from '../../lib/helpers/links'
 import { getSecret } from '../productionUrl/utils'
 import { ComponentProps, Suspense } from 'react'
 import { memo } from 'react'

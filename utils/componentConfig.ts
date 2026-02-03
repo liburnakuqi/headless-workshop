@@ -1,5 +1,3 @@
-import { SectionComponent } from 'lib/components/types'
-
 const componentTypeMap: Record<string, string> = {
   'AudioHero': 'Hero',
   'MainHero': 'Hero',

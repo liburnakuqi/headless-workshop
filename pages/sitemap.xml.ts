@@ -1,8 +1,7 @@
 import type { GetServerSideProps } from 'next'
 import type { SitemapPayload } from 'types'
 
-import { getAllPages } from '../sanity/lib/sanity.client'
-import { getAllPagesQuery } from '../sanity/lib/sanity.queries'
+import { getAllPages, getAllPagesQuery } from '../sanity/lib/sanity.client'
 
 const EXTERNAL_DATA_URLS: Record<string, string> = {
   'de-DE': 'https://joinhandshake.de',

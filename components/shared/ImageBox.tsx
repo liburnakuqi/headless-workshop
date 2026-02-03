@@ -1,4 +1,4 @@
-import { urlForImage } from '../../sanity/lib/sanity.image'
+import { urlForImage } from '../../sanity/lib/helpers/image'
 import Image from 'next/image'
 
 interface ImageBoxProps {
