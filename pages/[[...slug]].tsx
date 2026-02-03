@@ -2,13 +2,15 @@ import type { GetStaticProps } from 'next'
 import { lazy } from 'react'
 import { PagePayload } from 'types'
 import {
-  pagesBySlugQuery,
-  pagePathsQuery,
   getPageBySlug,
   getPagePaths,
   getFooter,
   getNavigation,
 } from '../sanity/lib/sanity.client'
+import {
+  pagesBySlugQuery,
+  pagePathsQuery,
+} from '../sanity/lib/sanity.queries'
 import { buildComponents } from 'utils/buildComponent'
 import { getLangParam } from '../sanity/helpers/i18n'
 import { getGlobalData } from '../lib/cache/globalData'
@@ -88,8 +90,6 @@ export const getStaticProps: GetStaticProps<PageProps> = async (ctx) => {
       preview: !!preview,
       token: token ?? null,
     },
-    // No revalidate needed - fresh data on each deployment via getStaticProps
-    // Pages are statically generated at build time with fresh Navigation/Footer
   }
 }
 

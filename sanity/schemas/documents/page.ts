@@ -42,13 +42,13 @@ export default defineType({
   ],
   preview: {
     select: {
-      title: 'slug.current',
-      lang: "_lang" // We need to find the best way to wrap global routes with localization
+      title: 'title',
+      lang: '_lang',
     },
     prepare(data) {
       return {
-        subtitle: 'Page',
-        title: data.title, // getLangTitleByLocale(data.lang),
+        subtitle: data.lang ? `Page (${data.lang})` : 'Page',
+        title: data.title || 'Untitled',
       }
     },
   },
