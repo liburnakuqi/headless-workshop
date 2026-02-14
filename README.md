@@ -24,36 +24,52 @@ Access the workshop presentation [here](https://docs.google.com/presentation/d/1
 
 ## Running the project locally
 
-### Update local env
+### Prerequisites
 
-Use ``` .env.local.example ``` as a reference to configure the required env var.
+- Node.js 18+
+- npm 9+
 
-### Next.js App
+### Environment variables
+
+Use `.env.local.example` as a reference and create a local `.env.local` file with the required values.
+
+### Install dependencies
 
 ```bash
 npm install
 ```
 
-You can start development environment for the frontend app by running:
+### Next.js app + embedded Sanity Studio
+
+Start the development environment:
 
 ```bash
 npm run dev
 ```
 
-Navigate to http://localhost:3000
-
-### Sanity Studio
-
-For this implementation, the Sanity Studio is embedded inside our Next.js app. This means that you just need to start the development environment for the frontend app and navigate to http://localhost:3000/studio.
+- Website: http://localhost:3000
+- Studio: http://localhost:3000/studio
 
 ### Storybook
 
-[Storybook](https://storybook.js.org/) contains all the prebuilt components we'll be working with. To access storybook locally run:
+[Storybook](https://storybook.js.org/) contains all prebuilt components used by the site. To run it locally:
 
 ```bash
 npm run storybook
 ```
 
 Navigate to http://localhost:6006.
+
+### Useful scripts
+
+- `npm run lint` – run ESLint checks
+- `npm run type-check` – run TypeScript checks
+- `npm run build` – build for production
+- `npm run start` – run the production build
+
+## Additional documentation
+
+- [Library architecture](lib/README.md)
+- [Architecture notes](docs/ARCHITECTURE_NOTES.md)
 
 
